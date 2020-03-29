@@ -1,0 +1,14 @@
+image: kitproject/gitpod-flutter:v1-13-6
+tasks:
+  - init: >
+      flutter pub get
+    command: >
+      flutter run --web-port=8080 --web-hostname=0.0.0.0 --target="example/lib/main.dart" -v
+ports:
+  - port: 8080
+    onOpen: open-preview
+vscode:
+  extensions:
+    - Dart-Code.dart-code@3.7.1:3XT4xvtPoRdNasA5smNMiA==
+    - Dart-Code.flutter@3.7.1:gujVOCgsbgoN2/po8X1tfA==
+    - alphabotsec.vscode-eclipse-keybindings@0.10.0:sHFK2cBlpLZsoaR/+m8Nig==
