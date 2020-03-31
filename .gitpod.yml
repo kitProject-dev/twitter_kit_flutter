@@ -2,8 +2,6 @@ image: kitproject/gitpod-flutter:v1-13-6
 tasks:
   - init: >
       flutter pub get
-    command: >
-      flutter run --web-port=8080 --web-hostname=0.0.0.0 --target="example/lib/main.dart" -v
 ports:
   - port: 8080
     onOpen: open-preview
