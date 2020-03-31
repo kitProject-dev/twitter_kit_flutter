@@ -194,7 +194,7 @@ class Tweet {
 
   /// An array of two unicode code point indices, identifying the inclusive start and exclusive end
   /// of the displayable content of the Tweet.
-  @JsonKey(name: "display_text_range")
+  @JsonKey(name: "display_text_range", defaultValue: <int>[])
   final List<int> displayTextRange;
 
   /// Indicates whether the value of the text parameter was truncated, for example, as a result of
@@ -221,7 +221,7 @@ class Tweet {
   /// from. Twitter supports the following non-country values for this field:
   /// "XX" - Content is withheld in all countries
   /// "XY" - Content is withheld due to a DMCA request.
-  @JsonKey(name: "withheld_in_countries")
+  @JsonKey(name: "withheld_in_countries", defaultValue: <String>[])
   final List<String> withheldInCountries;
 
   /// When present, indicates whether the content being withheld is the "status" or a "user."

@@ -8,7 +8,7 @@ class Coordinates {
 
   /// The longitude and latitude of the Tweet's location, as an collection in the form of
   /// [longitude, latitude].
-  @JsonKey(name: "coordinates")
+  @JsonKey(name: "coordinates", defaultValue: <double>[])
   final List<double> coordinates;
 
   /// The type of data encoded in the coordinates property. This will be "Point" for Tweet

@@ -49,13 +49,16 @@ Tweet _$TweetFromJson(Map<String, dynamic> json) {
     json['source'] as String,
     json['text'] as String,
     json['full_text'] as String,
-    (json['display_text_range'] as List)?.map((e) => e as int)?.toList(),
+    (json['display_text_range'] as List)?.map((e) => e as int)?.toList() ?? [],
     json['truncated'] as bool,
     json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
     json['withheld_copyright'] as bool,
-    (json['withheld_in_countries'] as List)?.map((e) => e as String)?.toList(),
+    (json['withheld_in_countries'] as List)
+            ?.map((e) => e as String)
+            ?.toList() ??
+        [],
     json['withheld_scope'] as String,
     json['card'] == null
         ? null

@@ -8,12 +8,13 @@ part of 'video_info.dart';
 
 VideoInfo _$VideoInfoFromJson(Map<String, dynamic> json) {
   return VideoInfo(
-    (json['aspect_ratio'] as List)?.map((e) => e as int)?.toList(),
+    (json['aspect_ratio'] as List)?.map((e) => e as int)?.toList() ?? [],
     json['duration_millis'] as int,
     (json['variants'] as List)
-        ?.map((e) =>
-            e == null ? null : Variant.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) =>
+                e == null ? null : Variant.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
   );
 }
 

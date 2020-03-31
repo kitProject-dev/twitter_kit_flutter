@@ -244,7 +244,7 @@ class User {
 
   /// When present, indicates a textual representation of the two-letter country codes this user is
   /// withheld from.
-  @JsonKey(name: "withheld_in_countries")
+  @JsonKey(name: "withheld_in_countries", defaultValue: <String>[])
   final List<String> withheldInCountries;
 
   /// When present, indicates whether the content being withheld is the "status" or a "user."

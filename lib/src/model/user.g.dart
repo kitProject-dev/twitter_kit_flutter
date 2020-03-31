@@ -52,7 +52,10 @@ User _$UserFromJson(Map<String, dynamic> json) {
     json['url'] as String,
     json['utc_offset'] as int,
     json['verified'] as bool,
-    (json['withheld_in_countries'] as List)?.map((e) => e as String)?.toList(),
+    (json['withheld_in_countries'] as List)
+            ?.map((e) => e as String)
+            ?.toList() ??
+        [],
     json['withheld_scope'] as String,
   );
 }

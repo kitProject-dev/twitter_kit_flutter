@@ -9,9 +9,11 @@ part of 'url_entities.dart';
 UrlEntities _$UrlEntitiesFromJson(Map<String, dynamic> json) {
   return UrlEntities(
     (json['urls'] as List)
-        ?.map((e) =>
-            e == null ? null : UrlEntity.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : UrlEntity.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
   );
 }
 

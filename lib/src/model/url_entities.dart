@@ -7,7 +7,7 @@ part 'url_entities.g.dart';
 class UrlEntities {
   UrlEntities(this.urls);
 
-  @JsonKey(name: "urls")
+  @JsonKey(name: "urls", defaultValue: <UrlEntities>[])
   final List<UrlEntity> urls;
 
   factory UrlEntities.fromJson(Map<String, dynamic> json) =>

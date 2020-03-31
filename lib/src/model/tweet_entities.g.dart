@@ -9,27 +9,35 @@ part of 'tweet_entities.dart';
 TweetEntities _$TweetEntitiesFromJson(Map<String, dynamic> json) {
   return TweetEntities(
     (json['urls'] as List)
-        ?.map((e) =>
-            e == null ? null : UrlEntity.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : UrlEntity.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
     (json['user_mentions'] as List)
-        ?.map((e) => e == null
-            ? null
-            : MentionEntity.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : MentionEntity.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
     (json['media'] as List)
-        ?.map((e) =>
-            e == null ? null : MediaEntity.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : MediaEntity.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
     (json['hashtags'] as List)
-        ?.map((e) => e == null
-            ? null
-            : HashtagEntity.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : HashtagEntity.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
     (json['symbols'] as List)
-        ?.map((e) =>
-            e == null ? null : SymbolEntity.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+            ?.map((e) => e == null
+                ? null
+                : SymbolEntity.fromJson(e as Map<String, dynamic>))
+            ?.toList() ??
+        [],
   );
 }
 

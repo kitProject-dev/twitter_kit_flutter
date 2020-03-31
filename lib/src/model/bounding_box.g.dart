@@ -9,11 +9,12 @@ part of 'bounding_box.dart';
 BoundingBox _$BoundingBoxFromJson(Map<String, dynamic> json) {
   return BoundingBox(
     (json['coordinates'] as List)
-        ?.map((e) => (e as List)
-            ?.map((e) =>
-                (e as List)?.map((e) => (e as num)?.toDouble())?.toList())
-            ?.toList())
-        ?.toList(),
+            ?.map((e) => (e as List)
+                ?.map((e) =>
+                    (e as List)?.map((e) => (e as num)?.toDouble())?.toList())
+                ?.toList())
+            ?.toList() ??
+        [],
     json['type'] as String,
   );
 }

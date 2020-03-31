@@ -9,7 +9,7 @@ class VideoInfo {
 
   /// The aspect ratio of the video, as a simplified fraction of width and height in a 2-element
   /// list. Typical values are [4, 3] or [16, 9].
-  @JsonKey(name: "aspect_ratio")
+  @JsonKey(name: "aspect_ratio", defaultValue: <int>[])
   final List<int> aspectRatio;
 
   /// The length of the video, in milliseconds.
@@ -17,7 +17,7 @@ class VideoInfo {
   final int durationMillis;
 
   /// Different encodings/streams of the video.
-  @JsonKey(name: "variants")
+  @JsonKey(name: "variants", defaultValue: <Variant>[])
   final List<Variant> variants;
 
   factory VideoInfo.fromJson(Map<String, dynamic> json) =>
