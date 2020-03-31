@@ -6,14 +6,14 @@ part 'variant.g.dart';
 class Variant {
   Variant(this.bitrate, this.contentType, this.url);
 
-  @JsonKey(name:"bitrate")
-   final int bitrate;
+  @JsonKey(name: "bitrate")
+  final int bitrate;
 
-  @JsonKey(name:"content_type")
-   final String contentType;
+  @JsonKey(name: "content_type")
+  final String contentType;
 
-  @JsonKey(name:"url")
-   final String url;
+  @JsonKey(name: "url")
+  final String url;
 
   factory Variant.fromJson(Map<String, dynamic> json) =>
       _$VariantFromJson(json);
