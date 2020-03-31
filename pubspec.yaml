@@ -1,8 +1,8 @@
 name: twitter_kit
-description: A new Flutter plugin.
+description: Project to make it easier to access the Twitter API. Referring to the Twitter kit for Android.
 version: 0.0.1
-author:
-homepage:
+author: kitProject
+homepage: https://github.com/kitProject-dev/twitter_kit_flutter
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

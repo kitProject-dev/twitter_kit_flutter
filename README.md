@@ -1,14 +1,18 @@
 # twitter_kit
 
-A new Flutter plugin.
+Project to make it easier to access the Twitter API.
+Referring to the Twitter kit for Android.
 
-## Getting Started
-
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## GET https://api.twitter.com/1.1/statuses/show.json
+  ```dart
+  final Twitter twitter = Twitter(consumerKey, consumerSecret, accessToken, accessSecret);
+  final StatusesService statusesService = twitter.statusesService;
+  await statusesService.show("1242645624106807297", true, true, true).then((response) {
+    if (response.isSuccessful) {
+      final Tweet tweet = response.body;
+      print(tweet.toJson());
+    } else {
+      print(response.error);
+    }
+  });
+  ```
