@@ -25,3 +25,5 @@ flutter:
   plugin:
     androidPackage: info.kitproject.twitter_kit
     pluginClass: TwitterKitPlugin
+  assets:
+    - assets/test/json/
