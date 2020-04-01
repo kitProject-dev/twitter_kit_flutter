@@ -1,7 +1,6 @@
 name: twitter_kit
 description: Project to make it easier to access the Twitter API. Referring to the Twitter kit for Android.
-version: 0.0.1
-author: kitProject
+version: 0.0.2
 homepage: https://github.com/kitProject-dev/twitter_kit_flutter
 
 environment:
