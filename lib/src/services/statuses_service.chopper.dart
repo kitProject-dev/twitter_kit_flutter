@@ -17,11 +17,20 @@ class _$StatusesService extends StatusesService {
   final definitionType = StatusesService;
 
   @override
-  Future<Response<Tweet>> show(
-      String id, bool trimUser, bool includeMyRetweet, bool includeEntities) {
-    final $url =
-        '/statuses/show.json?tweet_mode=extended&id=$id&trimUser=$trimUser&include_my_retweet=$includeMyRetweet&include_entities=$includeEntities';
-    final $request = Request('GET', $url, client.baseUrl);
+  Future<Response<Tweet>> show(int id,
+      {bool trimUser = true,
+      bool includeMyRetweet = true,
+      bool includeEntities = true,
+      String tweetMode = "extended"}) {
+    final $url = '/statuses/show.json';
+    final $params = <String, dynamic>{
+      'id': id,
+      'trimUser': trimUser,
+      'include_my_retweet': includeMyRetweet,
+      'include_entities': includeEntities,
+      'tweet_mode': tweetMode
+    };
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<Tweet, Tweet>($request);
   }
 }

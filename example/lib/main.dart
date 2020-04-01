@@ -24,12 +24,7 @@ class _MyAppState extends State<MyApp> {
     // TODO Your key.
     await Twitter("", "", "", "")
         .statusesService
-        .show(
-          "1242645624106807297",
-          true,
-          true,
-          true,
-        )
+        .show(1242645624106807297)
         .then((response) {
       if (response.isSuccessful) {
         setState(() {

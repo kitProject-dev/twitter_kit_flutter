@@ -20,12 +20,10 @@ abstract class StatusesService extends ChopperService {
   ///                         additional current_user_retweet node, containing the ID of the source
   ///                         status for the retweet.
   /// @param includeEntities (optional) The entities node will be disincluded when set to false.
-  @Get(
-      path: '/show.json?tweet_mode=extended'
-          '&id={id}'
-          '&trimUser={trimUser}'
-          '&include_my_retweet={includeMyRetweet}'
-          '&include_entities={includeEntities}')
-  Future<Response<Tweet>> show(@Path() String id, @Path() bool trimUser,
-      @Path() bool includeMyRetweet, @Path() bool includeEntities);
+  @Get(path: '/show.json')
+  Future<Response<Tweet>> show(@Query("id") int id,
+      {@Query("trimUser") bool trimUser = true,
+      @Query("include_my_retweet") bool includeMyRetweet = true,
+      @Query("include_entities") bool includeEntities = true,
+      @Query("tweet_mode") String tweetMode = "extended"});
 }

@@ -15,12 +15,7 @@ void main() {
   });
 
   test('show', () async {
-    final response = await _twitter.statusesService.show(
-      '1242645624106807297',
-      true,
-      true,
-      true,
-    );
+    final response = await _twitter.statusesService.show(1242645624106807297);
     final tweet = response.body;
     expect(tweet.createdAt, _EXPECTED_CREATED_AT);
     expect(tweet.entities, isNotNull);
