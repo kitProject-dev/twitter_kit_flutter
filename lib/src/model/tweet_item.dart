@@ -10,7 +10,8 @@ class TweetItem {
   @JsonKey(name: "id")
   final String id;
 
-  factory TweetItem.fromJson(Map<String, dynamic> json) => _$TweetItemFromJson(json);
+  factory TweetItem.fromJson(Map<String, dynamic> json) =>
+      _$TweetItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$TweetItemToJson(this);
 }
