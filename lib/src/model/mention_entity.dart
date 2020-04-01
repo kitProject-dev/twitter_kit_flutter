@@ -1,10 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twitter_kit/src/model/entity.dart';
 
 part 'mention_entity.g.dart';
 
 @JsonSerializable()
-class MentionEntity {
-  MentionEntity(this.id, this.idStr, this.name, this.screenName);
+class MentionEntity extends Entity {
+  MentionEntity(this.indices, this.id, this.idStr, this.name, this.screenName)
+      : super(indices);
+
+  @override
+  final List<int> indices;
 
   /// ID of the mentioned user, as an integer.
   @JsonKey(name: "id")

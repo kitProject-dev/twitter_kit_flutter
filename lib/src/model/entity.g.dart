@@ -1,20 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'symbol_entity.dart';
+part of 'entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SymbolEntity _$SymbolEntityFromJson(Map<String, dynamic> json) {
-  return SymbolEntity(
+Entity _$EntityFromJson(Map<String, dynamic> json) {
+  return Entity(
     (json['indices'] as List)?.map((e) => e as int)?.toList(),
-    json['text'] as String,
   );
 }
 
-Map<String, dynamic> _$SymbolEntityToJson(SymbolEntity instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$EntityToJson(Entity instance) => <String, dynamic>{
       'indices': instance.indices,
-      'text': instance.text,
     };

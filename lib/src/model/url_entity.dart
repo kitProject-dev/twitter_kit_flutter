@@ -1,10 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twitter_kit/src/model/entity.dart';
 
 part 'url_entity.g.dart';
 
 @JsonSerializable()
-class UrlEntity {
-  UrlEntity(this.url, this.expandedUrl, this.displayUrl);
+class UrlEntity extends Entity {
+  UrlEntity(this.indices, this.url, this.expandedUrl, this.displayUrl)
+      : super(indices);
+
+  @override
+  final List<int> indices;
 
   /// Wrapped URL, corresponding to the value embedded directly into the raw Tweet text, and the
   /// values for the indices parameter.

@@ -1,10 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twitter_kit/src/model/entity.dart';
 
 part 'hashtag_entity.g.dart';
 
 @JsonSerializable()
-class HashtagEntity {
-  HashtagEntity(this.text);
+class HashtagEntity extends Entity {
+  HashtagEntity(this.indices, this.text) : super(indices);
+
+  @override
+  final List<int> indices;
 
   /// Name of the hashtag, minus the leading '#' character.
   @JsonKey(name: "text")

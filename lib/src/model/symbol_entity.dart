@@ -1,10 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:twitter_kit/src/model/entity.dart';
 
 part 'symbol_entity.g.dart';
 
 @JsonSerializable()
-class SymbolEntity {
-  SymbolEntity(this.text);
+class SymbolEntity extends Entity {
+  SymbolEntity(this.indices, this.text) : super(indices);
+
+  @override
+  final List<int> indices;
 
   /// Name of the symbol, minus the leading '$' character.
   @JsonKey(name: "text")

@@ -8,6 +8,7 @@ part of 'mention_entity.dart';
 
 MentionEntity _$MentionEntityFromJson(Map<String, dynamic> json) {
   return MentionEntity(
+    (json['indices'] as List)?.map((e) => e as int)?.toList(),
     json['id'] as int,
     json['id_str'] as String,
     json['name'] as String,
@@ -17,6 +18,7 @@ MentionEntity _$MentionEntityFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$MentionEntityToJson(MentionEntity instance) =>
     <String, dynamic>{
+      'indices': instance.indices,
       'id': instance.id,
       'id_str': instance.idStr,
       'name': instance.name,

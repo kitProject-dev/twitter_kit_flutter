@@ -8,7 +8,11 @@ part of 'media_entity.dart';
 
 MediaEntity _$MediaEntityFromJson(Map<String, dynamic> json) {
   return MediaEntity(
-    json['id'] as int,
+    (json['indices'] as List)?.map((e) => e as int)?.toList(),
+    json['url'] as String,
+    json['expanded_url'] as String,
+    json['display_url'] as String,
+    (json['id'] as num)?.toDouble(),
     json['id_str'] as String,
     json['media_url'] as String,
     json['media_url_https'] as String,
@@ -27,6 +31,10 @@ MediaEntity _$MediaEntityFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$MediaEntityToJson(MediaEntity instance) =>
     <String, dynamic>{
+      'indices': instance.indices,
+      'url': instance.url,
+      'expanded_url': instance.expandedUrl,
+      'display_url': instance.displayUrl,
       'id': instance.id,
       'id_str': instance.idStr,
       'media_url': instance.mediaUrl,

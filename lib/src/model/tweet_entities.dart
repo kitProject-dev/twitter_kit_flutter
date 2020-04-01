@@ -12,8 +12,7 @@ class TweetEntities {
   TweetEntities(
       this.urls, this.userMentions, this.media, this.hashtags, this.symbols);
 
-  static final TweetEntities empty =
-      TweetEntities(null, null, null, null, null);
+  static final TweetEntities empty = TweetEntities([], [], [], [], []);
 
   /// Represents URLs included in the text of a Tweet or within textual fields of a user object.
   @JsonKey(name: "urls", defaultValue: <UrlEntity>[])

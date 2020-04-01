@@ -1,12 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:twitter_kit/src/model/sizes.dart';
+import 'package:twitter_kit/src/model/url_entity.dart';
 import 'package:twitter_kit/src/model/video_info.dart';
 
 part 'media_entity.g.dart';
 
 @JsonSerializable()
-class MediaEntity {
+class MediaEntity extends UrlEntity {
   MediaEntity(
+      this.indices,
+      this.url,
+      this.expandedUrl,
+      this.displayUrl,
       this.id,
       this.idStr,
       this.mediaUrl,
@@ -16,11 +21,24 @@ class MediaEntity {
       this.sourceStatusIdStr,
       this.type,
       this.videoInfo,
-      this.altText);
+      this.altText)
+      : super(indices, url, expandedUrl, displayUrl);
+
+  @override
+  final List<int> indices;
+
+  @override
+  final String url;
+
+  @override
+  final String expandedUrl;
+
+  @override
+  final String displayUrl;
 
   /// ID of the media expressed as a 64-bit integer.
   @JsonKey(name: "id")
-  final int id;
+  final double id;
 
   /// ID of the media expressed as a string.
   @JsonKey(name: "id_str")
