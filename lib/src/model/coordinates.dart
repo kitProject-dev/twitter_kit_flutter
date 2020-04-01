@@ -6,6 +6,9 @@ part 'coordinates.g.dart';
 class Coordinates {
   Coordinates(this.coordinates, this.type);
 
+  static const int _INDEX_LONGITUDE = 0;
+  static const int _INDEX_LATITUDE = 1;
+
   /// The longitude and latitude of the Tweet's location, as an collection in the form of
   /// [longitude, latitude].
   @JsonKey(name: "coordinates", defaultValue: <double>[])
@@ -15,6 +18,14 @@ class Coordinates {
   /// coordinates fields.
   @JsonKey(name: "type")
   final String type;
+
+  double getLongitude() {
+    return coordinates[_INDEX_LONGITUDE];
+  }
+
+  double getLatitude() {
+    return coordinates[_INDEX_LATITUDE];
+  }
 
   factory Coordinates.fromJson(Map<String, dynamic> json) =>
       _$CoordinatesFromJson(json);
