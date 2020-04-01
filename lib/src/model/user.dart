@@ -19,7 +19,7 @@ class User {
       this.followersCount,
       this.friendsCount,
       this.geoEnabled,
-      this.intid,
+      this.id,
       this.idStr,
       this.isTranslator,
       this.lang,
@@ -115,7 +115,7 @@ class User {
   /// id_str for fetching the identifier to stay on the safe side. See Twitter IDs, JSON and
   /// Snowflake.
   @JsonKey(name: "id")
-  final intid;
+  final id;
 
   /// The string representation of the unique identifier for this User. Implementations should use
   /// this rather than the large, possibly un-consumable integer in id

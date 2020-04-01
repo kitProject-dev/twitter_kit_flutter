@@ -73,7 +73,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'followers_count': instance.followersCount,
       'friends_count': instance.friendsCount,
       'geo_enabled': instance.geoEnabled,
-      'id': instance.intid,
+      'id': instance.id,
       'id_str': instance.idStr,
       'is_translator': instance.isTranslator,
       'lang': instance.lang,
