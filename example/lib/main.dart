@@ -61,7 +61,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _requestShowTweet() async {
-    _twitter.statusesService.show(1242645624106807297).then((response) {
+    _twitter.statusesService
+        .show(StatusesShowBody(1242645624106807297))
+        .then((response) {
       if (response.isSuccessful) {
         setState(() {
           _tweet = response.body;

@@ -17,20 +17,24 @@ class _$StatusesService extends StatusesService {
   final definitionType = StatusesService;
 
   @override
-  Future<Response<Tweet>> show(int id,
-      {bool trimUser = true,
-      bool includeMyRetweet = true,
-      bool includeEntities = true,
-      String tweetMode = "extended"}) {
-    final $url = '/statuses/show.json';
-    final $params = <String, dynamic>{
-      'id': id,
-      'trimUser': trimUser,
-      'include_my_retweet': includeMyRetweet,
-      'include_entities': includeEntities,
-      'tweet_mode': tweetMode
-    };
-    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
-    return client.send<Tweet, Tweet>($request);
+  Future<Response<Tweet>> show(StatusesShowBody showBody) {
+    final $url =
+        '/statuses/show.json?tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13&id={id}&include_my_retweet={include_my_retweet}&include_entities={include_entities}';
+    final $headers = {'content-type': 'application/x-www-form-urlencoded'};
+    final $body = showBody;
+    final $request =
+        Request('GET', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<Tweet, Tweet>($request, requestConverter: convertForm);
+  }
+
+  @override
+  Future<Response<Tweet>> update(StatusesUpdateBody updateBody) {
+    final $url =
+        '/statuses/update.json?tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13';
+    final $headers = {'content-type': 'application/x-www-form-urlencoded'};
+    final $body = updateBody;
+    final $request =
+        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    return client.send<Tweet, Tweet>($request, requestConverter: convertForm);
   }
 }
