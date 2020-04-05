@@ -7,7 +7,7 @@ Referring to the Twitter kit for Android.
   ```dart
   final Twitter twitter = Twitter(consumerKey, consumerSecret, accessToken, accessSecret);
   final StatusesService statusesService = twitter.statusesService;
-  await statusesService.show("1242645624106807297", true, true, true).then((response) {
+  await statusesService.show(StatusesShowBody(1242645624106807297)).then((response) {
     if (response.isSuccessful) {
       final Tweet tweet = response.body;
       print(tweet.toJson());
