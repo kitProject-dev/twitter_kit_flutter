@@ -1,27 +1,74 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:oauth1/oauth1.dart';
 import 'package:twitter_kit/src/model/tweet.dart';
 import 'package:twitter_kit/src/services/statuses_service.dart';
+import 'package:twitter_kit/twitter_kit.dart';
 
 class Twitter {
-  factory Twitter(consumerKey, consumerSecret, accessToken, accessSecret) {
-    final client = ChopperClient(
+  factory Twitter(String consumerKey, String consumerSecret) {
+    final twitterLogin = TwitterLogin(
+      consumerKey: consumerKey,
+      consumerSecret: consumerSecret,
+    );
+    return Twitter._(twitterLogin, consumerKey, consumerSecret);
+  }
+
+  Twitter._(this._twitterLogin, this._consumerKey, this._consumerSecret);
+
+  final TwitterLogin _twitterLogin;
+  final String _consumerKey;
+  final String _consumerSecret;
+  ChopperClient _client;
+
+  Future<bool> initialize() async {
+    final session = await _twitterLogin.currentSession;
+    if (session != null) {
+      createClient(session.token, session.secret);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> login() async {
+    final session = await _twitterLogin.currentSession;
+    if (session == null) {
+      final TwitterLoginResult result = await _twitterLogin.authorize();
+      if (result.status == TwitterLoginStatus.loggedIn) {
+        createClient(result.session.token, result.session.secret);
+        return true;
+      }
+      return false;
+    } else {
+      if (_client == null) {
+        createClient(session.token, session.secret);
+      }
+      return true;
+    }
+  }
+
+  Future<bool> isSessionActive() async {
+    return await _twitterLogin.isSessionActive;
+  }
+
+  Future<void> logOut() async {
+    await _twitterLogin.logOut();
+    _client = null;
+  }
+
+  void createClient(String token, String secret) {
+    _client = ChopperClient(
       baseUrl: "https://api.twitter.com/1.1",
       converter:
           JsonToTypeConverter({Tweet: (jsonData) => Tweet.fromJson(jsonData)}),
       services: [StatusesService.create()],
-      client:
-          _getClient(consumerKey, consumerSecret, accessToken, accessSecret),
+      client: _getClient(_consumerKey, _consumerSecret, token, secret),
     );
-    return Twitter._(client);
   }
-
-  Twitter._(this._client);
-
-  final ChopperClient _client;
 
   ChopperClient get client => _client;
 

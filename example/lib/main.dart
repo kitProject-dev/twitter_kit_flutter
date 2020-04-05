@@ -12,28 +12,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  Twitter _twitter;
   Tweet _tweet;
 
   @override
   void initState() {
     super.initState();
-    requestShowTweet();
-  }
-
-  Future<void> requestShowTweet() async {
     // TODO Your key.
-    await Twitter("", "", "", "")
-        .statusesService
-        .show(1242645624106807297)
-        .then((response) {
-      if (response.isSuccessful) {
-        setState(() {
-          _tweet = response.body;
-        });
-      } else {
-        print(response.error);
-      }
-    });
+    _twitter = Twitter("", "");
   }
 
   @override
@@ -44,9 +30,45 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text(_tweet != null ? jsonEncode(_tweet.toJson()) : "ready"),
+          child: FutureBuilder(
+            future: _twitter.initialize(),
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data) {
+                  if (_tweet == null) {
+                    _requestShowTweet();
+                  }
+                  return Text(
+                      _tweet != null ? jsonEncode(_tweet.toJson()) : "ready");
+                } else {
+                  return RaisedButton(
+                      child: const Text('Sign In With Twitter.'),
+                      onPressed: () async {
+                        final twitterLoginStatus = await _twitter.login();
+                        if (twitterLoginStatus) {
+                          setState(() {});
+                        }
+                      });
+                }
+              } else {
+                return Container();
+              }
+            },
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _requestShowTweet() async {
+    _twitter.statusesService.show(1242645624106807297).then((response) {
+      if (response.isSuccessful) {
+        setState(() {
+          _tweet = response.body;
+        });
+      } else {
+        print(response.error);
+      }
+    });
   }
 }

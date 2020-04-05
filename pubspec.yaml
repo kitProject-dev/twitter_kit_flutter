@@ -12,6 +12,8 @@ dependencies:
   json_annotation: ^3.0.1
   chopper: ^3.0.2
   oauth1: ^1.0.4
+  flutter_twitter_login:
+    git: https://github.com/kitProject-dev/flutter_twitter_login.git
 
 dev_dependencies:
   flutter_test:

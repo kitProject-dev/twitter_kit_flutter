@@ -11,7 +11,8 @@ void main() {
 
   setUp(() {
     // TODO Your key.
-    _twitter = Twitter("", "", "", "");
+    _twitter = Twitter("", "");
+    _twitter.createClient("", "");
   });
 
   test('show', () async {
