@@ -6,6 +6,7 @@ import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:oauth1/oauth1.dart';
 import 'package:twitter_kit/src/model/authorize_result.dart';
 import 'package:twitter_kit/src/model/tweet.dart';
+import 'package:twitter_kit/src/services/configuration_service.dart';
 import 'package:twitter_kit/src/services/statuses_service.dart';
 import 'package:twitter_kit/twitter_kit.dart';
 
@@ -71,11 +72,13 @@ class Twitter {
       converter: JsonToTypeConverter({
         Tweet: (jsonData) => Tweet.fromJson(jsonData),
         TwitterCollection: (jsonData) => TwitterCollection.fromJson(jsonData),
+        Configuration: (jsonData) => Configuration.fromJson(jsonData),
         User: (jsonData) => User.fromJson(jsonData)
       }),
       services: [
         AccountService.create(),
         CollectionService.create(),
+        ConfigurationService.create(),
         StatusesService.create()
       ],
       client: _getClient(
@@ -121,6 +124,9 @@ class Twitter {
 
   CollectionService get collectionService =>
       _client.getService<CollectionService>();
+
+  ConfigurationService get configurationService =>
+      _client.getService<ConfigurationService>();
 
   StatusesService get statusesService => _client.getService<StatusesService>();
 
