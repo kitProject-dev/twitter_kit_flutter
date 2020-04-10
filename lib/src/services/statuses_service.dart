@@ -1,6 +1,9 @@
 import 'package:chopper/chopper.dart';
 import 'package:twitter_kit/src/model/tweet.dart';
 import 'package:twitter_kit/src/services/model/convert_form.dart';
+import 'package:twitter_kit/src/services/model/statuses_destroy_body.dart';
+import 'package:twitter_kit/src/services/model/statuses_retweet_body.dart';
+import 'package:twitter_kit/src/services/model/statuses_unretweet_body.dart';
 import 'package:twitter_kit/twitter_kit.dart';
 
 part "statuses_service.chopper.dart";
@@ -9,6 +12,182 @@ part "statuses_service.chopper.dart";
 abstract class StatusesService extends ChopperService {
   static StatusesService create([ChopperClient client]) =>
       _$StatusesService(client);
+
+  /// Returns most recent mentions (tweets containing a user's @screen_name) for the
+  /// authenticating user, by default returns 20 tweets.
+  /// <p>
+  /// The timeline returned is the equivalent of the one seen when you view your mentions on
+  /// twitter.com.
+  /// <p>
+  /// The Twitter REST API goes back up to 800 tweets.
+  ///
+  /// @param count (optional) Specifies the number of tweets to try and retrieve, up to a maximum
+  ///              of 200. The value of count is best thought of as a limit to the number of tweets
+  ///              to return because suspended or deleted content is removed after the count has
+  ///              been applied. We include retweets in the count, even if include_rts is not
+  ///              supplied. It is recommended you always send include_rts=1 when using this API
+  ///              method.
+  /// @param sinceId (optional) Returns results with an ID greater than (that is, more recent than)
+  ///                the specified ID. There are limits to the number of tweets which can be
+  ///                accessed through the API. If the limit of tweets has occurred since the
+  ///                since_id, the since_id will be forced to the oldest ID available.
+  /// @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
+  ///              to the specified ID.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  /// @param contributeDetails (optional) This parameter enhances the contributors element of the
+  ///                          status response to include the screen_name of the contributor. By
+  ///                          default only the user_id of the contributor is included.
+  /// @param includeEntities (optional) The entities node will be disincluded when set to false.
+  @Get(path: "/mentions_timeline.json")
+  Future<Response<List<Tweet>>> mentionsTimeline(
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13",
+      @Query("count") int count,
+      @Query("since_id") int sinceId,
+      @Query("max_id") int maxId,
+      @Query("trim_user") bool trimUser,
+      @Query("contributor_details") bool contributeDetails,
+      @Query("include_entities") bool includeEntities});
+
+  /// Returns a collection of the most recent tweets posted by the user indicated by the
+  /// screen_name or user_id parameters.
+  /// <p>
+  /// User timelines belonging to protected users may only be requested when the authenticated user
+  /// either "owns" the timeline or is an approved follower of the owner.
+  /// <p>
+  /// The timeline returned is the equivalent of the one seen when you view a user's profile on
+  /// twitter.com.
+  /// <p>
+  /// The Twitter REST API goes back up to 3,200 of a user's most recent tweets.
+  /// Native retweets of other statuses by the user is included in this total, regardless of
+  /// whether include_rts is set to false when requesting this resource.
+  /// <p>
+  /// Always specify either an user_id or screen_name when requesting a user timeline.
+  ///
+  /// @param userId (optional) The ID of the user for whom to return results for.
+  /// @param screenName (optional) The screen name of the user for whom to return results for.
+  /// @param count (optional) Specifies the number of tweets to try and retrieve, up to a maximum
+  ///              of 200. The value of count is best thought of as a limit to the number of tweets
+  ///              to return because suspended or deleted content is removed after the count has
+  ///              been applied. We include retweets in the count, even if include_rts is not
+  ///              supplied. It is recommended you always send include_rts=1 when using this API
+  ///              method.
+  /// @param sinceId (optional) Returns results with an ID greater than (that is, more recent than)
+  ///                the specified ID. There are limits to the number of tweets which can be
+  ///                accessed through the API. If the limit of tweets has occurred since the
+  ///                since_id, the since_id will be forced to the oldest ID available.
+  /// @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
+  ///              to the specified ID.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  /// @param excludeReplies (optional) This parameter will prevent replies from appearing in the
+  ///                       returned timeline. Using exclude_replies with the count parameter will
+  ///                       mean you will receive up-to count tweets — this is because the count
+  ///                       parameter retrieves that many tweets before filtering out retweets and
+  ///                       replies. This parameter is only supported for JSON and XML responses.
+  /// @param contributeDetails (optional) This parameter enhances the contributors element of the
+  ///                          status response to include the screen_name of the contributor. By
+  ///                          default only the user_id of the contributor is included.
+  /// @param includeRetweets (optional) When set to false, the timeline will strip any native
+  ///                        retweets (though they will still count toward both the maximal length
+  ///                        of the timeline and the slice selected by the count parameter).
+  ///                        Note: If you're using the trim_user parameter in conjunction with
+  ///                        include_rts, the retweets will still contain a full user object.
+  @Get(path: "/user_timeline.json")
+  Future<Response<List<Tweet>>> userTimeline(
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13",
+      @Query("user_id") int userId,
+      @Query("screen_name") String screenName,
+      @Query("count") int count,
+      @Query("since_id") int sinceId,
+      @Query("max_id") int maxId,
+      @Query("trim_user") bool trimUser,
+      @Query("exclude_replies") bool excludeReplies,
+      @Query("contributor_details") bool contributeDetails,
+      @Query("include_rts") bool includeRetweets});
+
+  /// Returns a collection of the most recent Tweets and retweets posted by the authenticating user
+  /// and the users they follow. The home timeline is central to how most users interact with the
+  /// Twitter service.
+  /// <p>
+  /// The Twitter REST API goes back up to 800 tweets on the home timeline.
+  /// It is more volatile for users that follow many users or follow users who Tweet frequently.
+  ///
+  /// @param count (optional) Specifies the number of tweets to try and retrieve, up to a maximum
+  ///              of 200. The value of count is best thought of as a limit to the number of tweets
+  ///              to return because suspended or deleted content is removed after the count has
+  ///              been applied. We include retweets in the count, even if include_rts is not
+  ///              supplied. It is recommended you always send include_rts=1 when using this API
+  ///              method.
+  /// @param sinceId (optional) Returns results with an ID greater than (that is, more recent than)
+  ///                the specified ID. There are limits to the number of Tweets which can be
+  ///                accessed through the API. If the limit of Tweets has occurred since the
+  ///                since_id, the since_id will be forced to the oldest ID available.
+  /// @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
+  ///              to the specified ID.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  /// @param excludeReplies (optional) This parameter will prevent replies from appearing in the
+  ///                       returned timeline. Using exclude_replies with the count parameter will
+  ///                       mean you will receive up-to count tweets — this is because the count
+  ///                       parameter retrieves that many tweets before filtering out retweets and
+  ///                       replies. This parameter is only supported for JSON and XML responses.
+  /// @param contributeDetails (optional) This parameter enhances the contributors element of the
+  ///                          status response to include the screen_name of the contributor. By
+  ///                          default only the user_id of the contributor is included.
+  /// @param includeEntities (optional) The entities node will be disincluded when set to false.
+  @Get(path: "/home_timeline.json")
+  Future<Response<List<Tweet>>> homeTimeline(
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13",
+      @Query("count") int count,
+      @Query("since_id") int sinceId,
+      @Query("max_id") int maxId,
+      @Query("trim_user") bool trimUser,
+      @Query("exclude_replies") bool excludeReplies,
+      @Query("contributor_details") bool contributeDetails,
+      @Query("include_entities") bool includeEntities});
+
+  /// Returns the most recent tweets authored by the authenticating user that have been retweeted
+  /// by others. This timeline is a subset of the user's GET statuses / user_timeline.
+  ///
+  /// @param count (optional) Specifies the number of tweets to try and retrieve, up to a maximum
+  ///              of 200. The value of count is best thought of as a limit to the number of tweets
+  ///              to return because suspended or deleted content is removed after the count has
+  ///              been applied. We include retweets in the count, even if include_rts is not
+  ///              supplied. It is recommended you always send include_rts=1 when using this API
+  ///              method.
+  /// @param sinceId (optional) Returns results with an ID greater than (that is, more recent than)
+  ///                the specified ID. There are limits to the number of Tweets which can be
+  ///                accessed through the API. If the limit of Tweets has occurred since the
+  ///                since_id, the since_id will be forced to the oldest ID available.
+  /// @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
+  ///              to the specified ID.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  /// @param includeEntities (optional) The entities node will be disincluded when set to false.
+  /// @param includeUserEntities (optional) The user entities node will not be included when set to
+  ///                            false.
+  @Get(path: "/retweets_of_me.json")
+  Future<Response<List<Tweet>>> retweetsOfMe(
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13",
+      @Query("count") int count,
+      @Query("since_id") int sinceId,
+      @Query("max_id") int maxId,
+      @Query("trim_user") bool trimUser,
+      @Query("include_entities") bool includeEntities,
+      @Query("include_user_entities") bool includeUserEntities});
 
   /// Returns a single Tweet, specified by the id parameter. The Tweet's author will also be
   /// embedded within the Tweet.
@@ -22,8 +201,7 @@ abstract class StatusesService extends ChopperService {
   ///                         additional current_user_retweet node, containing the ID of the source
   ///                         status for the retweet.
   /// @param includeEntities (optional) The entities node will be disincluded when set to false.
-  @FactoryConverter(request: convertForm)
-  @Get(path: '/show.json', headers: {contentTypeKey: formEncodedHeaders})
+  @Get(path: "/show.json")
   Future<Response<Tweet>> show(@Query("id") int id,
       {@Query("tweet_mode") String tweetMode = "extended",
       @Query("include_cards") bool includeCards = true,
@@ -31,6 +209,43 @@ abstract class StatusesService extends ChopperService {
       @Query("trim_user") bool trimUser,
       @Query("include_my_retweet") bool includeMyRetweet,
       @Query("include_entities") bool includeEntities});
+
+  /// Returns fully-hydrated Tweet objects for up to 100 tweets per request, as specified by
+  /// comma-separated values passed to the id parameter.
+  /// <p>
+  /// This method is especially useful to get the details (hydrate) a collection of Tweet IDs.
+  /// <p>
+  /// GET statuses / show / :id is used to retrieve a single Tweet object.
+  /// <p>
+  /// There are a few things to note when using this method.
+  /// <ul>
+  /// <li>You must be following a protected user to be able to see their most recent tweets. If you
+  /// don't follow a protected user their status will be removed.</li>
+  /// <li>The order of Tweet IDs may not match the order of tweets in the returned array.</li>
+  /// <li>If a requested Tweet is unknown or deleted, then that Tweet will not be returned in the
+  /// results list, unless the map parameter is set to true, in which case it will be returned with
+  /// a value of null.</li>
+  /// <li>If none of your lookup criteria matches valid Tweet IDs an empty array will be returned
+  /// for map=false.</li>
+  /// <li>You are strongly encouraged to use a POST for larger requests.</li>
+  /// </ul>
+  ///
+  /// @param id (required) The comma separated ids of the desired Tweets as a string.
+  /// @param includeEntities (optional) The entities node will be disincluded when set to false.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  /// @param map (optional) When using the map parameter, tweets that do not exist or cannot be
+  ///            viewed by the current user will still have their key represented but with an
+  ///            explicitly null value paired with it
+  @Get(path: "/lookup.json")
+  Future<Response<List<Tweet>>> lookup(@Query("id") String id,
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13",
+      @Query("include_entities") bool includeEntities,
+      @Query("trim_user") bool trimUser,
+      @Query("map") bool map});
 
   /// Updates the authenticating user's current status, also known as tweeting.
   /// <p>
@@ -76,6 +291,54 @@ abstract class StatusesService extends ChopperService {
   @FactoryConverter(request: convertForm)
   @Post(path: "/update.json", headers: {contentTypeKey: formEncodedHeaders})
   Future<Response<Tweet>> update(@Body() StatusesUpdateBody updateBody,
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13"});
+
+  /// Retweets a Tweet. Returns the original Tweet with retweet details embedded.
+  ///
+  /// @param id (required) The numerical ID of the desired Tweet.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  @FactoryConverter(request: convertForm)
+  @Post(
+      path: "/retweet/{id}.json", headers: {contentTypeKey: formEncodedHeaders})
+  Future<Response<Tweet>> retweet(
+      @Path("id") int id, @Body() StatusesRetweetBody retweetBody,
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13"});
+
+  /// Destroys the status specified by the required ID parameter. The authenticating user must be
+  /// the author of the specified status. Returns the destroyed status if successful.
+  ///
+  /// @param id (required) The numerical ID of the desired Tweet.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  @FactoryConverter(request: convertForm)
+  @Post(
+      path: "/destroy/{id}.json", headers: {contentTypeKey: formEncodedHeaders})
+  Future<Response<Tweet>> destroy(
+      @Path("id") int id, @Body() StatusesDestroyBody destroyBody,
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13"});
+
+  /// Destroys the retweet specified by the required source Tweet's ID parameter. Returns the
+  /// source Tweet if successful.
+  ///
+  /// @param id (required) The numerical ID of the source Tweet.
+  /// @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+  ///                 will include a user object including only the status authors numerical ID.
+  ///                 Omit this parameter to receive the complete user object.
+  @FactoryConverter(request: convertForm)
+  @Post(
+      path: "/unretweet/{id}.json",
+      headers: {contentTypeKey: formEncodedHeaders})
+  Future<Response<Tweet>> unretweet(
+      @Path("id") int id, @Body() StatusesUnretweetBody unretweetBody,
       {@Query("tweet_mode") String tweetMode = "extended",
       @Query("include_cards") bool includeCards = true,
       @Query("cards_platform") String cardsPlatform = "TwitterKit-13"});
