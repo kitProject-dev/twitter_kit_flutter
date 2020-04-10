@@ -39,6 +39,10 @@ class Twitter {
     }
   }
 
+  Future<Session> get currentSession async => await _currentSession;
+
+  Future<bool> get isSessionActive async => await _currentSession != null;
+
   Future<bool> login() async {
     final session = await _currentSession;
     if (session == null) {
@@ -54,10 +58,6 @@ class Twitter {
       }
       return true;
     }
-  }
-
-  Future<bool> isSessionActive() async {
-    return await _currentSession != null;
   }
 
   Future<void> logout() async {
