@@ -23,12 +23,14 @@ abstract class StatusesService extends ChopperService {
   ///                         status for the retweet.
   /// @param includeEntities (optional) The entities node will be disincluded when set to false.
   @FactoryConverter(request: convertForm)
-  @Get(
-      path: '/show.json?' +
-          "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13" +
-          "&id={id}&include_my_retweet={include_my_retweet}&include_entities={include_entities}",
-      headers: {contentTypeKey: formEncodedHeaders})
-  Future<Response<Tweet>> show(@Body() StatusesShowBody showBody);
+  @Get(path: '/show.json', headers: {contentTypeKey: formEncodedHeaders})
+  Future<Response<Tweet>> show(@Query("id") int id,
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13",
+      @Query("trim_user") bool trimUser,
+      @Query("include_my_retweet") bool includeMyRetweet,
+      @Query("include_entities") bool includeEntities});
 
   /// Updates the authenticating user's current status, also known as tweeting.
   /// <p>
@@ -72,9 +74,9 @@ abstract class StatusesService extends ChopperService {
   /// @param mediaIds A comma separated media ids as a string for uploaded media to associate
   ///                 with a Tweet. You may include up to 4 photos in a Tweet.
   @FactoryConverter(request: convertForm)
-  @Post(
-      path: "/update.json?" +
-          "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13",
-      headers: {contentTypeKey: formEncodedHeaders})
-  Future<Response<Tweet>> update(@Body() StatusesUpdateBody updateBody);
+  @Post(path: "/update.json", headers: {contentTypeKey: formEncodedHeaders})
+  Future<Response<Tweet>> update(@Body() StatusesUpdateBody updateBody,
+      {@Query("tweet_mode") String tweetMode = "extended",
+      @Query("include_cards") bool includeCards = true,
+      @Query("cards_platform") String cardsPlatform = "TwitterKit-13"});
 }

@@ -17,24 +17,44 @@ class _$StatusesService extends StatusesService {
   final definitionType = StatusesService;
 
   @override
-  Future<Response<Tweet>> show(StatusesShowBody showBody) {
-    final $url =
-        '/statuses/show.json?tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13&id={id}&include_my_retweet={include_my_retweet}&include_entities={include_entities}';
+  Future<Response<Tweet>> show(int id,
+      {String tweetMode = "extended",
+      bool includeCards = true,
+      String cardsPlatform = "TwitterKit-13",
+      bool trimUser,
+      bool includeMyRetweet,
+      bool includeEntities}) {
+    final $url = '/statuses/show.json';
+    final $params = <String, dynamic>{
+      'id': id,
+      'tweet_mode': tweetMode,
+      'include_cards': includeCards,
+      'cards_platform': cardsPlatform,
+      'trim_user': trimUser,
+      'include_my_retweet': includeMyRetweet,
+      'include_entities': includeEntities
+    };
     final $headers = {'content-type': 'application/x-www-form-urlencoded'};
-    final $body = showBody;
-    final $request =
-        Request('GET', $url, client.baseUrl, body: $body, headers: $headers);
+    final $request = Request('GET', $url, client.baseUrl,
+        parameters: $params, headers: $headers);
     return client.send<Tweet, Tweet>($request, requestConverter: convertForm);
   }
 
   @override
-  Future<Response<Tweet>> update(StatusesUpdateBody updateBody) {
-    final $url =
-        '/statuses/update.json?tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13';
+  Future<Response<Tweet>> update(StatusesUpdateBody updateBody,
+      {String tweetMode = "extended",
+      bool includeCards = true,
+      String cardsPlatform = "TwitterKit-13"}) {
+    final $url = '/statuses/update.json';
+    final $params = <String, dynamic>{
+      'tweet_mode': tweetMode,
+      'include_cards': includeCards,
+      'cards_platform': cardsPlatform
+    };
     final $headers = {'content-type': 'application/x-www-form-urlencoded'};
     final $body = updateBody;
-    final $request =
-        Request('POST', $url, client.baseUrl, body: $body, headers: $headers);
+    final $request = Request('POST', $url, client.baseUrl,
+        body: $body, parameters: $params, headers: $headers);
     return client.send<Tweet, Tweet>($request, requestConverter: convertForm);
   }
 }
