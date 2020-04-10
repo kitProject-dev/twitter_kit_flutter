@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
-import 'package:flutter_twitter_login/flutter_twitter_login.dart';
+import 'package:flutter/services.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:oauth1/oauth1.dart';
+import 'package:twitter_kit/src/model/authorize_result.dart';
 import 'package:twitter_kit/src/model/tweet.dart';
 import 'package:twitter_kit/src/services/statuses_service.dart';
 import 'package:twitter_kit/twitter_kit.dart';
@@ -11,26 +12,27 @@ import 'package:twitter_kit/twitter_kit.dart';
 class Twitter {
   factory Twitter(String consumerKey, String consumerSecret,
       {bool logging = false}) {
-    final twitterLogin = TwitterLogin(
-      consumerKey: consumerKey,
-      consumerSecret: consumerSecret,
-    );
-    return Twitter._(twitterLogin, consumerKey, consumerSecret, logging);
+    return Twitter._(consumerKey, consumerSecret, logging);
   }
 
-  Twitter._(this._twitterLogin, this._consumerKey, this._consumerSecret,
-      this._logging);
+  Twitter._(this._consumerKey, this._consumerSecret, this._logging);
 
-  final TwitterLogin _twitterLogin;
+  static const MethodChannel channel =
+      const MethodChannel('info.kitproject.twitter_kit');
+  static const _ARG_KEY_CONSUMER_KEY = "consumerKey";
+  static const _ARG_KEY_CONSUMER_SECRET = "consumerSecret";
+  static const _METHOD_GET_CURRENT_SESSION = "getCurrentSession";
+  static const _METHOD_AUTHORIZE = "authorize";
+  static const _METHOD_LOGOUT = "'logout";
   final String _consumerKey;
   final String _consumerSecret;
   final bool _logging;
   ChopperClient _client;
 
   Future<bool> initialize() async {
-    final session = await _twitterLogin.currentSession;
+    final session = await _currentSession;
     if (session != null) {
-      createClient(session.token, session.secret);
+      createClient(session);
       return true;
     } else {
       return false;
@@ -38,38 +40,39 @@ class Twitter {
   }
 
   Future<bool> login() async {
-    final session = await _twitterLogin.currentSession;
+    final session = await _currentSession;
     if (session == null) {
-      final TwitterLoginResult result = await _twitterLogin.authorize();
-      if (result.status == TwitterLoginStatus.loggedIn) {
-        createClient(result.session.token, result.session.secret);
+      final result = await _authorize();
+      if (result.status == AuthorizeResult.RESULT_STATUS_LOGGED_IN) {
+        createClient(result.session);
         return true;
       }
       return false;
     } else {
       if (_client == null) {
-        createClient(session.token, session.secret);
+        createClient(session);
       }
       return true;
     }
   }
 
   Future<bool> isSessionActive() async {
-    return await _twitterLogin.isSessionActive;
+    return await _currentSession != null;
   }
 
-  Future<void> logOut() async {
-    await _twitterLogin.logOut();
+  Future<void> logout() async {
+    await _logout();
     _client = null;
   }
 
-  void createClient(String token, String secret) {
+  void createClient(session) {
     _client = ChopperClient(
       baseUrl: "https://api.twitter.com/1.1",
       converter:
           JsonToTypeConverter({Tweet: (jsonData) => Tweet.fromJson(jsonData)}),
       services: [StatusesService.create()],
-      client: _getClient(_consumerKey, _consumerSecret, token, secret),
+      client: _getClient(
+          _consumerKey, _consumerSecret, session.token, session.secret),
       interceptors: [
         (Request request) async {
           if (_logging) {
@@ -121,6 +124,32 @@ class Twitter {
         oauth1.ClientCredentials(consumerKey, consumerSecret),
         Credentials(accessToken, accessSecret));
   }
+
+  Future<Session> get _currentSession async {
+    final Map<dynamic, dynamic> session = await channel.invokeMethod(
+        _METHOD_GET_CURRENT_SESSION, {
+      _ARG_KEY_CONSUMER_KEY: _consumerKey,
+      _ARG_KEY_CONSUMER_SECRET: _consumerSecret
+    });
+    if (session == null) {
+      return null;
+    }
+    return Session.fromJson(session);
+  }
+
+  Future<AuthorizeResult> _authorize() async {
+    final Map<dynamic, dynamic> result = await channel.invokeMethod(
+        _METHOD_AUTHORIZE, {
+      _ARG_KEY_CONSUMER_KEY: _consumerKey,
+      _ARG_KEY_CONSUMER_SECRET: _consumerSecret
+    });
+    return AuthorizeResult.fromJson(result);
+  }
+
+  Future<void> _logout() async => channel.invokeMethod(_METHOD_LOGOUT, {
+        _ARG_KEY_CONSUMER_KEY: _consumerKey,
+        _ARG_KEY_CONSUMER_SECRET: _consumerSecret
+      });
 }
 
 class JsonToTypeConverter extends JsonConverter {

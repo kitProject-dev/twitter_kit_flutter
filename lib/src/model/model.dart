@@ -1,5 +1,6 @@
 library model;
 
+export 'authorize_result.dart';
 export 'binding_values.dart';
 export 'bounding_box.dart';
 export 'card.dart';
@@ -14,6 +15,7 @@ export 'mention_entity.dart';
 export 'metadata.dart';
 export 'place.dart';
 export 'position.dart';
+export 'session.dart';
 export 'size.dart';
 export 'sizes.dart';
 export 'symbol_entity.dart';

@@ -12,7 +12,7 @@ void main() {
   setUp(() {
     // TODO Your key.
     _twitter = Twitter("", "");
-    _twitter.createClient("", "");
+    _twitter.createClient(Session("", "", "", ""));
   });
 
   test('show', () async {
