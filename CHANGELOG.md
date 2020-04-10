@@ -1,3 +1,10 @@
+# 0.1.0
+- Add List service
+- Add Favorite service
+- Add configuration service
+- Add collection service
+- Add account service
+
 # 0.0.6
 - Add other statuses api
 
