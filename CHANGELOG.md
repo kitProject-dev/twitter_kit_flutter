@@ -1,3 +1,6 @@
+# 0.0.6
+- Add other statuses api
+
 # 0.0.5
 - Remove code that doesn't work
 
