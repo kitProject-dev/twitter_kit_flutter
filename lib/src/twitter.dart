@@ -70,9 +70,14 @@ class Twitter {
       baseUrl: "https://api.twitter.com/1.1",
       converter: JsonToTypeConverter({
         Tweet: (jsonData) => Tweet.fromJson(jsonData),
+        TwitterCollection: (jsonData) => TwitterCollection.fromJson(jsonData),
         User: (jsonData) => User.fromJson(jsonData)
       }),
-      services: [AccountService.create(), StatusesService.create()],
+      services: [
+        AccountService.create(),
+        CollectionService.create(),
+        StatusesService.create()
+      ],
       client: _getClient(
           _consumerKey, _consumerSecret, session.token, session.secret),
       interceptors: [
@@ -113,6 +118,9 @@ class Twitter {
   ChopperClient get client => _client;
 
   AccountService get accountService => _client.getService<AccountService>();
+
+  CollectionService get collectionService =>
+      _client.getService<CollectionService>();
 
   StatusesService get statusesService => _client.getService<StatusesService>();
 
