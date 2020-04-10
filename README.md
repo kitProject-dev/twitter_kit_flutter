@@ -4,6 +4,7 @@ Project to make it easier to access the Twitter API.
 Referring to the Twitter kit for Android.
 
 ## Authorize
+※iOS Not work
   ```dart
   final Twitter twitter = Twitter(consumerKey, consumerSecret);
 

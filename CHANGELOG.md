@@ -1,3 +1,6 @@
+# 0.0.5
+- Remove code that doesn't work
+
 # 0.0.4
 
 - Add twitter login. ※Android only
