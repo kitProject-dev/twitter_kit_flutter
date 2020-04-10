@@ -9,19 +9,22 @@ import 'package:twitter_kit/src/services/statuses_service.dart';
 import 'package:twitter_kit/twitter_kit.dart';
 
 class Twitter {
-  factory Twitter(String consumerKey, String consumerSecret) {
+  factory Twitter(String consumerKey, String consumerSecret,
+      {bool logging = false}) {
     final twitterLogin = TwitterLogin(
       consumerKey: consumerKey,
       consumerSecret: consumerSecret,
     );
-    return Twitter._(twitterLogin, consumerKey, consumerSecret);
+    return Twitter._(twitterLogin, consumerKey, consumerSecret, logging);
   }
 
-  Twitter._(this._twitterLogin, this._consumerKey, this._consumerSecret);
+  Twitter._(this._twitterLogin, this._consumerKey, this._consumerSecret,
+      this._logging);
 
   final TwitterLogin _twitterLogin;
   final String _consumerKey;
   final String _consumerSecret;
+  final bool _logging;
   ChopperClient _client;
 
   Future<bool> initialize() async {
@@ -67,6 +70,38 @@ class Twitter {
           JsonToTypeConverter({Tweet: (jsonData) => Tweet.fromJson(jsonData)}),
       services: [StatusesService.create()],
       client: _getClient(_consumerKey, _consumerSecret, token, secret),
+      interceptors: [
+        (Request request) async {
+          if (_logging) {
+            print("""
+                =========HTTP Request logging=========
+                baseUrl: ${request.baseUrl}
+                url: ${request.url}
+                parameter: ${request.parameters}
+                method: ${request.method}
+                headers: ${request.headers}
+                body: ${request.body}
+                multipart: ${request.multipart}
+                parts: ${request.parts}
+                ======================================
+              """);
+          }
+          return request;
+        },
+        (Response response) async {
+          if (_logging) {
+            print("""
+                =========HTTP Response logging=========
+                url: ${response.base.request.url}
+                status: ${response.statusCode}
+                headers: ${response.headers}
+                body: ${response.body}
+                ======================================
+              """);
+          }
+          return response;
+        },
+      ],
     );
   }
 
