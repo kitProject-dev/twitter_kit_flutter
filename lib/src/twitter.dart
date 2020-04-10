@@ -80,6 +80,7 @@ class Twitter {
         CollectionService.createService(),
         ConfigurationService.createService(),
         FavoriteService.createService(),
+        ListService.createService(),
         StatusesService.createService()
       ],
       client: _getClient(
@@ -130,6 +131,8 @@ class Twitter {
       _client.getService<ConfigurationService>();
 
   FavoriteService get favoriteService => _client.getService<FavoriteService>();
+
+  ListService get listService => _client.getService<ListService>();
 
   StatusesService get statusesService => _client.getService<StatusesService>();
 
