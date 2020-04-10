@@ -5,7 +5,7 @@ part "collection_service.chopper.dart";
 
 @ChopperApi(baseUrl: "/collections")
 abstract class CollectionService extends ChopperService {
-  static CollectionService create([ChopperClient client]) =>
+  static CollectionService createService([ChopperClient client]) =>
       _$CollectionService(client);
 
   /// Retrieve the identified TwitterCollection, presented as a list of the curated Tweets.

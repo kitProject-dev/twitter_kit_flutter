@@ -5,7 +5,7 @@ part "configuration_service.chopper.dart";
 
 @ChopperApi(baseUrl: "/help")
 abstract class ConfigurationService extends ChopperService {
-  static ConfigurationService create([ChopperClient client]) =>
+  static ConfigurationService createService([ChopperClient client]) =>
       _$ConfigurationService(client);
 
   /// Returns the current configuration used by Twitter including twitter.com slugs which are not

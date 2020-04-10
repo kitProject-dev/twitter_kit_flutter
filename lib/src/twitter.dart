@@ -76,10 +76,11 @@ class Twitter {
         User: (jsonData) => User.fromJson(jsonData)
       }),
       services: [
-        AccountService.create(),
-        CollectionService.create(),
-        ConfigurationService.create(),
-        StatusesService.create()
+        AccountService.createService(),
+        CollectionService.createService(),
+        ConfigurationService.createService(),
+        FavoriteService.createService(),
+        StatusesService.createService()
       ],
       client: _getClient(
           _consumerKey, _consumerSecret, session.token, session.secret),
@@ -127,6 +128,8 @@ class Twitter {
 
   ConfigurationService get configurationService =>
       _client.getService<ConfigurationService>();
+
+  FavoriteService get favoriteService => _client.getService<FavoriteService>();
 
   StatusesService get statusesService => _client.getService<StatusesService>();
 

@@ -10,7 +10,7 @@ part "statuses_service.chopper.dart";
 
 @ChopperApi(baseUrl: "/statuses")
 abstract class StatusesService extends ChopperService {
-  static StatusesService create([ChopperClient client]) =>
+  static StatusesService createService([ChopperClient client]) =>
       _$StatusesService(client);
 
   /// Returns most recent mentions (tweets containing a user's @screen_name) for the

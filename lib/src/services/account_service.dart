@@ -5,7 +5,7 @@ part "account_service.chopper.dart";
 
 @ChopperApi(baseUrl: "/account")
 abstract class AccountService extends ChopperService {
-  static AccountService create([ChopperClient client]) =>
+  static AccountService createService([ChopperClient client]) =>
       _$AccountService(client);
 
   /// Returns an HTTP 200 OK response code and a representation of the requesting user if
