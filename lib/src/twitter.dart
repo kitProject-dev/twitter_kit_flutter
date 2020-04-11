@@ -24,7 +24,7 @@ class Twitter {
   static const _ARG_KEY_CONSUMER_SECRET = "consumerSecret";
   static const _METHOD_GET_CURRENT_SESSION = "getCurrentSession";
   static const _METHOD_AUTHORIZE = "authorize";
-  static const _METHOD_LOGOUT = "'logout";
+  static const _METHOD_LOGOUT = "logout";
   final String _consumerKey;
   final String _consumerSecret;
   final bool _logging;
@@ -170,7 +170,7 @@ class Twitter {
     return AuthorizeResult.fromJson(result);
   }
 
-  Future<void> _logout() async => channel.invokeMethod(_METHOD_LOGOUT, {
+  Future<void> _logout() async => await channel.invokeMethod(_METHOD_LOGOUT, {
         _ARG_KEY_CONSUMER_KEY: _consumerKey,
         _ARG_KEY_CONSUMER_SECRET: _consumerSecret
       });
