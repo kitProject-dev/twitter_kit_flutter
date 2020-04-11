@@ -1,3 +1,7 @@
+# 0.2.0
+- Fix logout process
+- Add twitter login for iOS
+
 # 0.1.0
 - Add List service
 - Add Favorite service

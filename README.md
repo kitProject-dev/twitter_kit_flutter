@@ -31,7 +31,6 @@ Web is not supported due to Cross-Domain issues.
   ```
 
 ## TODO
-- iOS authorize.
 - Adding the media api
 - Adding the search api
 - Adding the APIs not included in twitter-kit-android
