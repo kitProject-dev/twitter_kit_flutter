@@ -72,8 +72,13 @@ class _BodyState extends State<Body> {
       return RaisedButton(
           child: const Text('Sign In With Twitter.'),
           onPressed: () async {
-            final twitterLoginStatus = await widget._twitter.login();
-            if (twitterLoginStatus) {
+            Session session;
+            try {
+              session = await widget._twitter.login();
+            } on TwitterAuthException catch (e) {
+              print(e.message);
+            }
+            if (session != null) {
               setState(() {
                 _isSessionActive = true;
               });

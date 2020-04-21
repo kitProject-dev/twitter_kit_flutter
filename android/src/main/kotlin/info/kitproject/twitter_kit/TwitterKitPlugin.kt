@@ -111,7 +111,7 @@ class TwitterKitPlugin private constructor(private val registrar: Registrar)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent): Boolean {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         if (authClientInstance != null) {
             authClientInstance!!.onActivityResult(requestCode, resultCode, data)
         }

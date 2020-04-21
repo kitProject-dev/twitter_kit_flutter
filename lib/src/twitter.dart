@@ -4,6 +4,7 @@ import 'package:chopper/chopper.dart';
 import 'package:flutter/services.dart';
 import 'package:oauth1/oauth1.dart' as oauth1;
 import 'package:oauth1/oauth1.dart';
+import 'package:twitter_kit/src/exception/twitter_auth_exception.dart';
 import 'package:twitter_kit/src/model/authorize_result.dart';
 import 'package:twitter_kit/src/model/tweet.dart';
 import 'package:twitter_kit/src/services/configuration_service.dart';
@@ -44,20 +45,20 @@ class Twitter {
 
   Future<bool> get isSessionActive async => await _currentSession != null;
 
-  Future<bool> login() async {
+  Future<Session> login() async {
     final session = await _currentSession;
     if (session == null) {
       final result = await _authorize();
       if (result.status == AuthorizeResult.RESULT_STATUS_LOGGED_IN) {
         createClient(result.session);
-        return true;
+        return result.session;
       }
-      return false;
+      throw TwitterAuthException(result.errorMessage);
     } else {
       if (_client == null) {
         createClient(session);
       }
-      return true;
+      return session;
     }
   }
 
